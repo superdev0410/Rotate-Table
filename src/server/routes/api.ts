@@ -11,8 +11,8 @@ var table: string[][] = [];
 
 apiRouter.get("/table", async (_: Request, res: Response) => {
   res.json({
-    rows: rows,
-    columns: columns,
+    row: rows,
+    column: columns,
     direction: direction,
     table: table,
   });
@@ -35,13 +35,13 @@ apiRouter.put("/table", async (req: Request, res: Response) => {
   res.sendStatus(200);
 });
 
-apiRouter.put(
-  "/table/rotate/:direction",
-  async (req: Request, res: Response) => {
-    direction = req.params.direction;
-    table = rotate(table, rows, columns, direction);
-    res.sendStatus(200);
-  }
-);
+apiRouter.put("/table/rotate", async (req: Request, res: Response) => {
+  direction = req.body.direction;
+  table = rotate(table, rows, columns, direction);
+  const temp = rows;
+  rows = columns;
+  columns = temp;
+  res.sendStatus(200);
+});
 
 export default apiRouter;
