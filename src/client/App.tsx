@@ -2,6 +2,7 @@ import { useState, useCallback } from "react";
 
 import InputWithLabel from "./components/InputWithLabel";
 import SelectWithLabel from "./components/SelectWithLabel";
+import { Button } from "./components/ui/button";
 import { DIRECTIONS } from "./lib/constants";
 
 const App = () => {
@@ -35,6 +36,7 @@ const App = () => {
           value={column.toString()}
           onChange={onColumnChange}
         />
+        <Button>Create</Button>
         <SelectWithLabel
           label="Direction"
           value={direction}
@@ -42,6 +44,7 @@ const App = () => {
           placeholder="Select Direction"
           onChange={setDirection}
         />
+        <Button>Rotate</Button>
       </div>
     </div>
   );
