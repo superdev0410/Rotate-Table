@@ -1,10 +1,7 @@
 import { useState, useCallback, useEffect } from "react";
 
-import InputWithLabel from "./components/InputWithLabel";
-import SelectWithLabel from "./components/SelectWithLabel";
-import { Button } from "./components/ui/button";
-import { Table, TableBody, TableRow } from "./components/ui/table";
-import { Toaster } from "./components/ui/toaster";
+import { InputWithLabel, SelectWithLabel, EditableCell } from "./components";
+import { Button, Table, TableBody, TableRow, Toaster } from "./components/ui";
 import { useToast } from "./components/ui/use-toast";
 import {
   useGetTable,
@@ -13,8 +10,6 @@ import {
   usePutTableRotate,
 } from "./hooks";
 import { DIRECTIONS } from "./lib/constants";
-import { Input } from "./components/ui/input";
-import EditableCell from "./components/EditableCell";
 
 const App = () => {
   const [row, setRow] = useState(0);

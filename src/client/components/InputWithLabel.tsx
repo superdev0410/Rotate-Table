@@ -1,7 +1,6 @@
-import { ChangeEvent, useCallback } from "react";
+import { ChangeEvent, useCallback, memo } from "react";
 
-import { Input } from "./ui/input";
-import { Label } from "./ui/label";
+import { Input, Label } from "./ui";
 
 interface InputWithLabelProps {
   label: string;
@@ -11,24 +10,18 @@ interface InputWithLabelProps {
   onChange: (value: string) => void;
 }
 
-const InputWithLabel = ({
-  label,
-  value,
-  id,
-  type,
-  onChange,
-}: InputWithLabelProps) => {
-  const onValueChange = useCallback(
-    (e: ChangeEvent<HTMLInputElement>) => onChange(e.target.value),
-    [onChange]
-  );
+export const InputWithLabel = memo(
+  ({ label, value, id, type, onChange }: InputWithLabelProps) => {
+    const onValueChange = useCallback(
+      (e: ChangeEvent<HTMLInputElement>) => onChange(e.target.value),
+      [onChange]
+    );
 
-  return (
-    <div className="grid w-full max-w-sm items-center gap-1.5">
-      <Label htmlFor={id}>{label}</Label>
-      <Input type={type} id={id} value={value} onChange={onValueChange} />
-    </div>
-  );
-};
-
-export default InputWithLabel;
+    return (
+      <div className="grid w-full max-w-sm items-center gap-1.5">
+        <Label htmlFor={id}>{label}</Label>
+        <Input type={type} id={id} value={value} onChange={onValueChange} />
+      </div>
+    );
+  }
+);
