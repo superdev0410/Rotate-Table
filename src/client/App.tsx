@@ -1,10 +1,13 @@
 import { useState, useCallback } from "react";
 
 import InputWithLabel from "./components/InputWithLabel";
+import SelectWithLabel from "./components/SelectWithLabel";
+import { DIRECTIONS } from "./lib/constants";
 
 const App = () => {
   const [row, setRow] = useState(0);
   const [column, setColumn] = useState(0);
+  const [direction, setDirection] = useState("");
 
   const onRowChange = useCallback(
     (value: string) => setRow(Number(value)),
@@ -31,6 +34,13 @@ const App = () => {
           id="columns"
           value={column.toString()}
           onChange={onColumnChange}
+        />
+        <SelectWithLabel
+          label="Direction"
+          value={direction}
+          items={DIRECTIONS}
+          placeholder="Select Direction"
+          onChange={setDirection}
         />
       </div>
     </div>
