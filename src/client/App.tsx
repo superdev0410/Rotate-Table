@@ -3,11 +3,18 @@ import { useState, useCallback, useEffect } from "react";
 import InputWithLabel from "./components/InputWithLabel";
 import SelectWithLabel from "./components/SelectWithLabel";
 import { Button } from "./components/ui/button";
-import { Table, TableBody, TableCell, TableRow } from "./components/ui/table";
+import { Table, TableBody, TableRow } from "./components/ui/table";
 import { Toaster } from "./components/ui/toaster";
 import { useToast } from "./components/ui/use-toast";
-import { useGetTable, usePostTable, usePutTableRotate } from "./hooks";
+import {
+  useGetTable,
+  usePostTable,
+  usePutTable,
+  usePutTableRotate,
+} from "./hooks";
 import { DIRECTIONS } from "./lib/constants";
+import { Input } from "./components/ui/input";
+import EditableCell from "./components/EditableCell";
 
 const App = () => {
   const [row, setRow] = useState(0);
@@ -15,6 +22,7 @@ const App = () => {
   const [direction, setDirection] = useState("");
   const tableInfo = useGetTable();
   const createTable = usePostTable();
+  const updateTable = usePutTable();
   const rotateTable = usePutTableRotate();
   const { toast } = useToast();
 
@@ -79,6 +87,29 @@ const App = () => {
       },
     });
   }, [direction]);
+  const onChangeCell = useCallback(
+    (row: number, column: number, value: string) => {
+      updateTable.mutate(
+        { row, column, value },
+        {
+          onSuccess: () => {
+            toast({
+              title: "Success",
+              description: "Update Table Successfully.",
+            });
+          },
+          onError: () => {
+            toast({
+              title: "Error",
+              description: "Failed to update table",
+              variant: "destructive",
+            });
+          },
+        }
+      );
+    },
+    [updateTable, toast]
+  );
 
   useEffect(() => {
     if (tableInfo.data && !tableInfo.isLoading) {
@@ -122,12 +153,13 @@ const App = () => {
             {tableInfo.data.table.map((rowData, rowIndex) => (
               <TableRow key={rowIndex}>
                 {rowData.map((cell, colIndex) => (
-                  <TableCell
+                  <EditableCell
                     key={colIndex}
-                    className="tw-border-2 tw-border-black"
-                  >
-                    {cell}
-                  </TableCell>
+                    rowIndex={rowIndex}
+                    colIndex={colIndex}
+                    value={cell}
+                    onChange={onChangeCell}
+                  />
                 ))}
               </TableRow>
             ))}
